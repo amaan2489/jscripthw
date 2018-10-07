@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Psychic</title>
+</head>
+
+<body>
+
+    <h1>The Psychic Game</h1>
+    <div id="canvas"></div>
+    <p>Guess what letter I am thinking of!</p>
+    <br>
+    <p id="Wins">Wins:</p>
+    <br>
+    <p id="Losses">Losses:</p>
+    <br>
+    <p id="Guessesleft">GuessesLeft:</p>
+    <br>
+    <p id="guess">Your guesses so far:</p>
+
+
+    <script>
+
+        var wins = 0;
+        var winscomp = 0;
+        var lossescomp = 0;
+        var losses = 0;
+        var guess_left = 9;
+        var text = "";
+        var arr = [];
+        var key;
+        var guess_left_rev = 9;
+
+
+        myFunc("Guessesleft", 9);
+
+
+
+        function makeid() {
+
+            var possible = "abcdefghijklmnopqrstuvwxyz";
+
+
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+            return text;
+
+
+        }
+        
+        makeid();
+
+        document.addEventListener('keyup', function (event) {
+            if (event.defaultPrevented) {
+                return;
+            }
+            key = event.key || event.keyCode;
+
+
+
+            if (losses == lossescomp || wins == winscomp) {
+                if (key === text) {
+                    wins++;
+                    myFunc("Wins", wins);
+                    reset();
+                    var abc = arr.length;
+                    arr.splice(0, abc);
+                }
+
+                else {
+                    if (guess_left >= 1) {
+
+                        guess_left--;
+
+                        arr.push(key);
+                        myFunc2("guess", arr);
+                        myFunc("Guessesleft", guess_left);
+
+                    }
+
+
+                    else if (guess_left <= 0) {
+                        losses++;
+                        myFunc("Losses", losses);
+                        guess_left = guess_left_rev;
+                        var abc = arr.length;
+                        arr.splice(0, abc);
+
+
+                    }
+
+
+                }
+            }
+
+            else if (losses != lossescomp || wins != winscomp) {
+                reset();
+
+            }
+        });
+
+
+        function reset() {
+
+            var sentenceg = document.getElementById("guess");
+            sentenceg.innerHTML = "<p> Your guesses so far:</p>";
+            myFunc("Guessesleft", 9);
+            lossescomp = 0;
+            winscomp = 0;
+            losses = 0;
+            wins = 0;
+            guess_left=9;
+            makeid();
+
+        }
+
+        function whennotmatched() {
+
+
+            guess_left--;
+
+
+            if (guess_left <= 0) {
+                losses++;
+
+                myFunc("Losses", losses);
+            }
+
+        }
+
+        function myFunc(variable, newvalue) {
+
+            var sentence = document.getElementById(variable);
+            var text = document.createTextNode(newvalue);
+            sentence.innerHTML = "<p>" + variable + ":</p>";
+            sentence.appendChild(text);
+        }
+
+
+        function myFunc2(variable, newvalue) {
+
+            if (newvalue.length <= 8) {
+
+                var sentence = document.getElementById(variable);
+                var text = document.createTextNode(newvalue);
+                sentence.innerHTML = "<p>" + variable + ":</p>";
+                sentence.appendChild(text);
+            }
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+</body>
+
+</html>
